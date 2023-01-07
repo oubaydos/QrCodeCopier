@@ -7,10 +7,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 @MicronautTest
-class BackendTest {
+class BackendServiceTest {
 
     @Inject
-//    EmbeddedApplication<?> application;
     BackendService backendService;
 
     @Test

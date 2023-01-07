@@ -8,7 +8,7 @@ import org.reactivestreams.Publisher;
 
 import java.util.Arrays;
 
-@ServerWebSocket("/socket/{token}")
+@ServerWebSocket("/ws/{token}")
 @Slf4j
 @RequiredArgsConstructor
 public class BackendWebSocket {
@@ -19,11 +19,12 @@ public class BackendWebSocket {
         return broadcaster.broadcast(String.format("[%s] Opened", token));
     }
 
+
     @OnMessage
     public Publisher<String> handleMessage(
-            String token) {
+            String token, String message) {
 
-        return broadcaster.broadcast(String.format("[%s] Opened", token));
+        return broadcaster.broadcast(String.format("[%s] Message: %s", token, message));
     }
 
     @OnClose
@@ -38,8 +39,9 @@ public class BackendWebSocket {
             String token,
             Throwable err) {
 
-        log.error("errrrrrrrrr {}", Arrays.toString(err.getStackTrace()));
-        return broadcaster.broadcast(String.format("[%s] %s", token, err.getMessage()));
+        log.error("{}", Arrays.toString(err.getStackTrace()));
+        return broadcaster.broadcast(String.format("[%s] Error: %s", token, err.getMessage()));
     }
+
 
 }
