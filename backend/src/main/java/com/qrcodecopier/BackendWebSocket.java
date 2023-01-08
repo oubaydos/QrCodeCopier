@@ -1,6 +1,6 @@
 package com.qrcodecopier;
 
-import io.micronaut.websocket.WebSocketBroadcaster;
+import io.micronaut.websocket.WebSocketSession;
 import io.micronaut.websocket.annotation.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,39 +8,40 @@ import org.reactivestreams.Publisher;
 
 import java.util.Arrays;
 
-@ServerWebSocket("/ws/{token}")
+@ServerWebSocket()
 @Slf4j
 @RequiredArgsConstructor
 public class BackendWebSocket {
-    private final WebSocketBroadcaster broadcaster;
+
+    private final WebSocketService webSocketService;
 
     @OnOpen
-    public Publisher<String> openSession(String token) {
-        return broadcaster.broadcast(String.format("[%s] Opened", token));
+    public Publisher<String> openSession(WebSocketSession session) {
+        log.info("open sessions {}", session.getOpenSessions());
+        return webSocketService.handleOpen(session);
     }
 
 
     @OnMessage
-    public Publisher<String> handleMessage(
-            String token, String message) {
-
-        return broadcaster.broadcast(String.format("[%s] Message: %s", token, message));
+    public Publisher<String> handleMessage(String message, WebSocketSession session) {
+        return webSocketService.handleMessage(message, session);
     }
 
     @OnClose
     public Publisher<String> closeConnection(
-            String token) {
+            WebSocketSession session) {
 
-        return broadcaster.broadcast(String.format("[%s] Leaving!", token));
+        return webSocketService.closeConnection(session);
     }
+
 
     @OnError
     public Publisher<String> handleError(
-            String token,
+            WebSocketSession session,
             Throwable err) {
 
         log.error("{}", Arrays.toString(err.getStackTrace()));
-        return broadcaster.broadcast(String.format("[%s] Error: %s", token, err.getMessage()));
+        return webSocketService.handleError(session, err);
     }
 
 
