@@ -1,0 +1,5 @@
+{
+  "HOSTNAME": "localhost",
+  "PORT": 8080,
+  "WEBSOCKET_PATH": "ws"
+}
