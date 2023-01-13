@@ -1,5 +1,6 @@
 package com.qrcodecopier;
 
+import com.qrcodecopier.service.BackendService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;

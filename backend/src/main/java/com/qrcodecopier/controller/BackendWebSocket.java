@@ -1,5 +1,7 @@
-package com.qrcodecopier;
+package com.qrcodecopier.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.qrcodecopier.service.WebSocketService;
 import io.micronaut.websocket.WebSocketSession;
 import io.micronaut.websocket.annotation.*;
 import lombok.RequiredArgsConstructor;

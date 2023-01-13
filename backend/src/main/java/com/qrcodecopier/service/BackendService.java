@@ -1,5 +1,7 @@
-package com.qrcodecopier;
+package com.qrcodecopier.service;
 
+import com.qrcodecopier.model.Message;
+import com.qrcodecopier.model.MessageType;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.websocket.WebSocketBroadcaster;
 import jakarta.inject.Singleton;
@@ -8,7 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
-import static com.qrcodecopier.Utils.verifySessionIdHash;
+import static com.qrcodecopier.utils.Utils.serializeToJson;
+import static com.qrcodecopier.utils.Utils.verifySessionIdHash;
 
 @Singleton
 @RequiredArgsConstructor
@@ -18,7 +21,8 @@ public class BackendService {
 
     public HttpResponse<?> copyUrl(String token, String url) {
         validateToken(token);
-        broadcaster.broadcastAsync(url, session -> verifySessionIdHash(token, session.getId()));
+        Message message = new Message(MessageType.REDIRECTION_URL, url);
+        broadcaster.broadcastAsync(serializeToJson(message), session -> verifySessionIdHash(token, session.getId()));
         return HttpResponse.ok();
     }
 
