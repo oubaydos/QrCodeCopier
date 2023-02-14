@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import config from '../config.json';
 import {redirect, showToken, showUrlToRedirectTo} from "../service/utils";
+import QrCode from "react-qr-code"
 import "../style/Home.css"
 
 const BACKEND_SOCKET_URL: string = `ws://${config.hostname}:${config.port}/ws`
@@ -28,6 +29,7 @@ export default function () {
     return (
         <div>
             {data.map(value => <h1 key={value}>${value}</h1>)}
+            {data.length === 1 && <QrCode value={data[0]}/>}
         </div>
     );
 }
