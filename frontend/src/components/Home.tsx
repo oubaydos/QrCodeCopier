@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import QrCode from "react-qr-code"
 import "../style/Home.css"
 import {BACKEND_SOCKET_URL} from "../config/config";
 import {handleMessage} from "../service/websocket";
@@ -17,7 +18,8 @@ function Home() {
     return (
         <div>
             {sessionId && <QRCode value={sessionId} style={{margin: "20px"}}/>}
-            {data.map(value => <h1 key={value}>{value}</h1>)}
+            {data.map(value => <h1 key={value}>${value}</h1>)}
+            {data.length === 1 && <QrCode value={data[0]}/>}
         </div>
     );
 }
