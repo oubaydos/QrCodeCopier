@@ -24,7 +24,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
+            android:id="@+id/server"
+            android:hint="server url (example:port)"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
             android:id="@+id/urlInput"
+            android:hint="url to go to"
             />
 
         <Button

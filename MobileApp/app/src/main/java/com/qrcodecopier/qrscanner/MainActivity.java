@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button scanBtn,submitBtn;
     String token;
-    EditText urlInput;
+    EditText urlInput, server;
     ActivityResultLauncher<ScanOptions> barLaucher = registerForActivityResult(new ScanContract(), result->
     {
         if(result.getContents() !=null)
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
             Log.i("TOKEN", "token: "+token);
             urlInput.setVisibility(View.VISIBLE);
             submitBtn.setVisibility(View.VISIBLE);
+            server.setVisibility(View.VISIBLE);
             scanBtn.setVisibility(View.GONE);
 
         }else {
@@ -53,9 +54,11 @@ public class MainActivity extends AppCompatActivity {
         scanBtn = findViewById(R.id.scanbtn);
         submitBtn = findViewById(R.id.submit);
         urlInput = findViewById(R.id.urlInput);
+        server = findViewById(R.id.server);
 
         submitBtn.setVisibility(View.GONE);
         urlInput.setVisibility(View.GONE);
+        server.setVisibility(View.GONE);
 
         scanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendUrl(String url){
-        if (token != null){
+        if (token != null && server.getText().toString().length() != 0){
             MyTask task = new MyTask();
             task.execute(url);
         }else {
@@ -97,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             String responseBody;
             try {
-                URL endpoint = new URL("http://10.192.62.186:8080/api");
+                URL endpoint = new URL("http://"+server.getText().toString()+"/api");
                 HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type", "application/json");
