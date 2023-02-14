@@ -5,9 +5,12 @@ export const redirect = (url: string): void => {
     window.location.href = getUrlWithHttpOrDefault(url);
 }
 
+<<<<<<< HEAD
 export function showToken(token: string, setData: Dispatch<SetStateAction<string[]>>) {
     setData(data => [...data,token]);
 }
+=======
+>>>>>>> main
 
 export function showUrlToRedirectTo(url: string, setData: Dispatch<SetStateAction<string[]>>) {
     setData(data => [...data, "redirecting to: " + url]);

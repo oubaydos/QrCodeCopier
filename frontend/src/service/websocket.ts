@@ -1,12 +1,20 @@
-import {redirect} from "./utils";
+import {redirect, showUrlToRedirectTo} from "./utils";
+import {Message, MessageType} from "./messageType";
+import {Dispatch, SetStateAction} from "react";
 
-// const onMessage = (webSocket: WebSocket, numberOfMessagesReceived: number) => function handleUrlMessage(msg: { data: string }) {
-//     numberOfMessagesReceived++;
-//     if (numberOfMessagesReceived === 1) // FIXME THIS IS NOT THE WAY
-//         showToken(msg.data)
-//     else {
-//         webSocket.close()
-//         showUrlToRedirectTo(msg.data)
-//         setTimeout(() => redirect(msg.data), 1000);
-//     }
-// }
+export const handleMessage =
+    (webSocket: WebSocket, setData: Dispatch<SetStateAction<string[]>>, setSessionId: Dispatch<SetStateAction<string>>) =>
+        function handleUrlMessage(msg: { data: string }) {
+            const message: Message = JSON.parse(msg.data);
+            if (message.type === MessageType.SESSION_ID)
+                setSessionId(message.message)
+            else if (message.type === MessageType.REDIRECTION_URL) {
+                webSocket.close()
+                showUrlToRedirectTo(message.message, setData)
+                setTimeout(() => redirect(message.message), 1000);
+            } else {
+                webSocket.close();
+                alert(message.type)
+                alert(message.message)
+            }
+        }
