@@ -13,8 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
@@ -37,17 +35,11 @@ public class MainActivity extends AppCompatActivity {
     {
         if(result.getContents() !=null)
         {
-            Gson gson = new Gson();
-            try {
-                JsonObject jsonObject = gson.fromJson(result.getContents(),JsonObject.class);
-                token = jsonObject.get("message").getAsString();
-                Log.i("TOKEN", "token: "+token);
-                urlInput.setVisibility(View.VISIBLE);
-                submitBtn.setVisibility(View.VISIBLE);
-                scanBtn.setVisibility(View.GONE);
-            }catch (Exception e){
-                token = null;
-            }
+            token = result.getContents();
+            Log.i("TOKEN", "token: "+token);
+            urlInput.setVisibility(View.VISIBLE);
+            submitBtn.setVisibility(View.VISIBLE);
+            scanBtn.setVisibility(View.GONE);
 
         }else {
             token = null;
