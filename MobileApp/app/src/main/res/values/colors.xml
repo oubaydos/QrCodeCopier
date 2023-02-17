@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!-- My colors -->
+    <color name="blue_de_france">#008bf8</color>
+    <color name="malachite">#04e762</color>
+    <color name="selective_yellow">#F5B700</color>
+    <color name="chartreuse">#89FC00</color>
+    <color name="mexican_pink">#DC0073</color>
 </resources>

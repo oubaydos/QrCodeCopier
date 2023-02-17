@@ -1,46 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        >
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            />
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_weight="2"
+            android:scaleType="centerInside"
+            android:src="@drawable/qr_img"
+            />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+
+
 
     <Button
         android:id="@+id/scanbtn"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:text="Scan QrCode"
-        android:layout_centerInParent="true"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:orientation="vertical"
-        android:gravity="center"
-        >
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:id="@+id/server"
-            android:hint="server url (example:port)"
-            />
+        android:text="@string/scanbtn"
+        android:textAllCaps="false"
+        android:layout_marginBottom="50dp"
+        android:backgroundTint="@color/blue_de_france"
+        android:paddingHorizontal="25dp"
+        android:paddingVertical="10dp"
+        android:textSize="18dp"
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:id="@+id/urlInput"
-            android:hint="url to go to"
-            />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Submit"
-            android:id="@+id/submit"
-            />
-    </LinearLayout>
-</RelativeLayout>
+        />
+</LinearLayout>
