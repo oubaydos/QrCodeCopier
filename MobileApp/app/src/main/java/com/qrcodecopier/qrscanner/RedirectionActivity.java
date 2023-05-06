@@ -2,9 +2,12 @@ package com.qrcodecopier.qrscanner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
@@ -13,12 +16,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.qrcodecopier.qrscanner.utils.MyProperties;
+import com.qrcodecopier.qrscanner.utils.Utils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class RedirectionActivity extends AppCompatActivity {
 
@@ -70,13 +78,11 @@ public class RedirectionActivity extends AppCompatActivity {
     }
     private boolean verifyUrl(String url){
         String regex = "^((http|https)://)?(www\\.)?[a-zA-Z0-9]+(\\.[a-zA-Z]{2,})+(/.*)?$";
-        if (url.matches(regex))
-            return true;
-        return false;
+        return url.matches(regex);
     }
     private void processToken(String token){
-        String positiveMsg="We have the token, you can continue !";
-        String negativeMsg="The token maybe not be correct, it is recommanded to go back and scan the right Qr Code";
+        String positiveMsg=getResources().getString(R.string.positive_msg);
+        String negativeMsg=getResources().getString(R.string.negative_msg);
         if (token == null || notAsExpected(token)){
             this.token = null;
             alertText.setText(negativeMsg);
@@ -91,10 +97,7 @@ public class RedirectionActivity extends AppCompatActivity {
     }
 
     private boolean notAsExpected(String token){
-        if (!token.contains(" ;)({}:")){
-            return false;
-        }
-        return true;
+        return token.contains(" ;)({}:");
     }
     private void sendUrl(String url){
         if (token != null){
@@ -107,18 +110,22 @@ public class RedirectionActivity extends AppCompatActivity {
 
 
     }
+
+    @SuppressLint("StaticFieldLeak")
     private class MyTask extends AsyncTask<String, Void, Pair<String,Boolean>> {
+
+        MyProperties properties = MyProperties.getInstance();
         protected Pair<String,Boolean> doInBackground(String... params) {
             String responseBody;
-            Boolean succes = true;
+            boolean success = true;
             try {
-                URL endpoint = new URL(Config.SERVER_URL);
+                URL endpoint = new URL(properties.getServerURl());
                 HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type", "application/json");
                 connection.setDoOutput(true);
 
-                String requestBody = "{\"token\":\"" + token + "\", \"url\":\"" + params[0] + "\"}";
+                String requestBody = Utils.buildRequestBody(token,params[0]);
 
                 OutputStream outputStream = connection.getOutputStream();
                 outputStream.write(requestBody.getBytes());
@@ -133,15 +140,15 @@ public class RedirectionActivity extends AppCompatActivity {
                     inputStream.close();
                 } else {
                     responseBody = "HTTP Error: " + responseCode;
-                    succes = false;
+                    success = false;
                 }
                 connection.disconnect();
             } catch (Exception e) {
                 responseBody = e.toString();
-                succes = false;
+                success = false;
 
             }
-            return new Pair<>(responseBody,succes);
+            return new Pair<>(responseBody,success);
         }
         private String readStream(InputStream inputStream) throws IOException {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
