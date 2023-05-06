@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">QrScanner</string>
+    <string name="scanbtn">Scan the Qr Code</string>
+    <string name="redirectto">Redirect to …</string>
+    <string name="redirectiourl">type the URL</string>
+    <string name="positive_msg">We have the token, you can continue !</string>
+    <string name="negative_msg">The token maybe not be correct, it is recommanded to go back and scan the right Qr Code</string>
 </resources>
